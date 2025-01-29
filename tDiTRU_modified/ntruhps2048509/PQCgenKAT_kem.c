@@ -44,7 +44,7 @@ main()
     }
 
     // Print the polynomial using the function from helper_print.c
-    print_poly_values(&r);  
+   // print_poly_values(&r);  
     // Create the REQUEST file
     sprintf(fn_req, "PQCkemKAT_%d.req", tDiTRU_SECRETKEYBYTES);
     if ( (fp_req = fopen(fn_req, "w")) == NULL ) {
@@ -111,13 +111,14 @@ main()
         }
         fprintBstr(fp_rsp, "ct = ", ct, tDiTRU_CIPHERTEXTBYTES);
         fprintBstr(fp_rsp, "ss = ", ss, tDiTRU_SHAREDKEYBYTES);
-
+     
         fprintf(fp_rsp, "\n");
 
         if ( (ret_val = crypto_kem_dec(ss1, ct, sk)) != 0) {
             printf("crypto_kem_dec returned <%d>\n", ret_val);
             return KAT_CRYPTO_FAILURE;
         }
+        fprintBstr(fp_rsp, "ss1 = ", ss1, tDiTRU_CIPHERTEXTBYTES);//ss in dec
 
         if ( memcmp(ss, ss1, tDiTRU_SHAREDKEYBYTES) ) {
             printf("crypto_kem_dec returned bad 'ss' value\n");

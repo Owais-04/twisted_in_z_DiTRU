@@ -1,4 +1,5 @@
 #include "poly.h"
+#include <stdio.h>
 
 void poly_Sq_tobytes(unsigned char *r, const poly *a)
 {
@@ -45,6 +46,10 @@ void poly_Sq_tobytes(unsigned char *r, const poly *a)
       r[11 * i + 1] = (unsigned char) (t[0] >>  8) | ((t[1] & 0x1f) << 3);
       r[11 * i + 2] = (unsigned char) (t[1] >>  5) | ((t[2] & 0x03) << 6);
       break;
+      case 1:
+         r[11 * i + 0] = (unsigned char) (t[0]        & 0xff);
+         r[11 * i + 1] = (unsigned char) ((t[0] >>  8) | ((  0x00) << 3));           //added case 1
+         break;
   }
 }
 
@@ -76,6 +81,10 @@ void poly_Sq_frombytes(poly *r, const unsigned char *a)
       r->coeffs[8*i+0] = (a[11*i+ 0] >> 0) | (((uint16_t)a[11*i+ 1] & 0x07) << 8);
       r->coeffs[8*i+1] = (a[11*i+ 1] >> 3) | (((uint16_t)a[11*i+ 2] & 0x3f) << 5);
       break;
+    case 1:
+
+      r->coeffs[8*i+0] = (a[11*i+ 0] >> 0) | (((uint16_t)a[11*i+ 1] & 0x07) << 8);         //added case 1
+      break;
   }
   r->coeffs[ORDER-1] = 0;
 }
@@ -93,8 +102,7 @@ void poly_Rq_sum_zero_frombytes(poly *r, const unsigned char *a)
   /* Set r[n-1] so that the sum of coefficients is zero mod q */
   r->coeffs[ORDER-1] = 0;//code change
   for(i=N;i<tDiTRU_PACK_DEG;i++)
- //   r->coeffs[ORDER-1] += MODQ(tDiTRU_Q - r->coeffs[i]); //sum of negative of all coeffs
- r->coeffs[ORDER-1] -= (r->coeffs[i]);
-  //  r->coeffs[ORDER-1]=MODQ(r->coeffs[ORDER-1]);
+ r->coeffs[ORDER-1] -= (r->coeffs[i]); 
+ // r->coeffs[ORDER-1]=MODQ(r->coeffs[ORDER-1]);
   
 }

@@ -81,11 +81,14 @@ void owcpa_keypair(unsigned char *pk,
   sample_fg_tDiTRU(f,g,seed);
 
   poly_S3_inv_tDiTRU(invf_mod3, f); 
+ 
   poly_S3_tobytes(sk, f);
   poly_S3_tobytes(sk+tDiTRU_PACK_TRINARY_BYTES, invf_mod3);
  
   /* Lift coeffs of f and g from Z_p to Z_q */
   poly_Z3_to_Zq_tDiTRU(f);
+  // printf("f keypair: ");
+  // print_poly_values(f);//f
   poly_Z3_to_Zq_tDiTRU(g);
 
 
@@ -97,6 +100,7 @@ void owcpa_keypair(unsigned char *pk,
 #endif
 
   poly_Rq_mul_tDiTRU(gf, g, f, True);
+  
 
   poly_Rq_inv_tDiTRU(invgf, gf);
 
@@ -109,8 +113,7 @@ void owcpa_keypair(unsigned char *pk,
   poly_Rq_mul_tDiTRU(h, tmp, g, False);
   
   poly_Rq_sum_zero_tobytes(pk, h);
-  printf("h:\n");
-  print_poly_values(h);
+
 
 }
 
@@ -126,13 +129,16 @@ void owcpa_enc(unsigned char *c,
   poly *ct = &x2;
 
   poly_Rq_sum_zero_frombytes(h, pk);
-
+//   printf("h: ");
+// print_poly_values(h);
   poly_Rq_mul_tDiTRU(ct, r, h,False);
 
   poly_lift(liftm, m);
+
   for(i=0; i<ORDER; i++)
     ct->coeffs[i] = ct->coeffs[i] + liftm->coeffs[i];
-
+     printf("ct\n");
+   print_poly_values(ct);
   poly_Rq_sum_zero_tobytes(c, ct);
 }
 
@@ -149,17 +155,23 @@ int owcpa_dec(unsigned char *rm,
   poly *liftm = &x2, *invh = &x3, *r = &x4;
   poly *b = &x1;
 
-  poly_Rq_sum_zero_frombytes(c, ciphertext);
+  poly_Rq_sum_zero_frombytes(c, ciphertext);//mod values check above 2048?
+ printf("c:\n");
+ print_poly_values(c);
   poly_S3_frombytes_tDiTRU(f, secretkey);
   poly_Z3_to_Zq_tDiTRU(f);
-
+  // printf("f dec: ");
+  // print_poly_values(f);
   poly_Rq_mul_tDiTRU(cf, c, f,False);  //changed
   
   poly_Rq_to_S3(mf, cf);    //changed with respect to order
-  
+
 
   poly_S3_frombytes_tDiTRU(finv3, secretkey+tDiTRU_PACK_TRINARY_BYTES);
+  
   poly_S3_mul_tDiTRU(m, mf, finv3);
+  printf("m: \n");
+  print_poly_values(m);
   poly_S3_tobytes(rm+tDiTRU_PACK_TRINARY_BYTES, m);
 
   fail = 0;

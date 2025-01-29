@@ -6,41 +6,44 @@
 #include "params.h"
 #include "rng.h"
 #include "sample.h"
+#include "helper_print.h"
 
 // API FUNCTIONS 
 int crypto_kem_keypair(unsigned char *pk, unsigned char *sk)
 {
-  printf("keypair\n");
+
   unsigned char seed[tDiTRU_SAMPLE_FT_BYTES];
 
-  randombytes(seed, tDiTRU_SAMPLE_FG_BYTES);
+  randombytes(seed, tDiTRU_SAMPLE_FT_BYTES);
 
   owcpa_keypair(pk, sk, seed);
-  printf("ocpa\n");
- // randombytes(sk+tDiTRU_OWCPA_SECRETKEYBYTES, tDiTRU_PRFKEYBYTES);
-printf("keyp end");
+  
+  randombytes(sk+tDiTRU_OWCPA_SECRETKEYBYTES, tDiTRU_PRFKEYBYTES);
+
   return 0;
 }
 
 int crypto_kem_enc(unsigned char *c, unsigned char *k, const unsigned char *pk)
 { 
-  printf("enc\n");
+
   poly r, m;
   unsigned char rm[tDiTRU_OWCPA_MSGBYTES];
   unsigned char rm_seed[tDiTRU_SAMPLE_RM_BYTES];
 
   randombytes(rm_seed, tDiTRU_SAMPLE_RM_BYTES);
 
-  sample_rm(&r, &m, rm_seed);
-
+  sample_rm_tDiTRU(&r, &m, rm_seed);
+ 
   poly_S3_tobytes(rm, &r);
   poly_S3_tobytes(rm+tDiTRU_PACK_TRINARY_BYTES, &m);
   crypto_hash_sha3256(k, rm, tDiTRU_OWCPA_MSGBYTES);
 
   poly_Z3_to_Zq_tDiTRU(&r);
+
   owcpa_enc(c, &r, &m, pk);
 
   return 0;
+
 }
 
 int crypto_kem_dec(unsigned char *k, const unsigned char *c, const unsigned char *sk)

@@ -14,6 +14,7 @@ typedef struct{
 #define poly_mod_3_Phi_n CRYPTO_NAMESPACE(poly_mod_3_Phi_n)
 #define poly_mod_q_Phi_n CRYPTO_NAMESPACE(poly_mod_q_Phi_n)
 #define poly_mod_3_Phi_n_tDiTRU CRYPTO_NAMESPACE(poly_mod_3_Phi_n_tDiTRU)
+#define poly_mod_q_Phi_n_tDiTRU CRYPTO_NAMESPACE(poly_mod_q_Phi_n_tDiTRU)
 #define rotinv CRYPTO_NAMESPACE(rotinv)
 #define rotinv_S CRYPTO_NAMESPACE(rot_inv_S)
 #define get_minus CRYPTO_NAMESPACE(get_minus)
@@ -23,6 +24,7 @@ typedef struct{
 void poly_mod_3_Phi_n(poly *r);
 void poly_mod_q_Phi_n(poly *r);
 void poly_mod_3_Phi_n_tDiTRU(poly *r);
+void poly_mod_q_Phi_n_tDiTRU(poly *r);
 void rotinv(poly *r1, poly *r2);
 void rotinv_S(poly *r1, poly *r2);
 void rotinv_S3(poly *r1, poly *r2);

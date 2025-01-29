@@ -10,11 +10,14 @@
 
 #define sample_fg CRYPTO_NAMESPACE(sample_fg)
 #define sample_rm CRYPTO_NAMESPACE(sample_rm)
+#define sample_rm_tDiTRU CRYPTO_NAMESPACE(sample_rm_tDiTRU)
 #define sample_fg_tDiTRU CRYPTO_NAMESPACE(sample_fg_tDiTRU)
+
 
 void sample_fg(poly *f, poly *g, const unsigned char uniformbytes[tDiTRU_SAMPLE_FG_BYTES]);
 void sample_fg_tDiTRU(poly *f, poly *g, const unsigned char uniformbytes[tDiTRU_SAMPLE_FG_BYTES]);
 void sample_rm(poly *r, poly *m, const unsigned char uniformbytes[tDiTRU_SAMPLE_RM_BYTES]);
+void sample_rm_tDiTRU(poly *r, poly *m, const unsigned char uniformbytes[tDiTRU_SAMPLE_RM_BYTES]);
 
 #define sample_iid CRYPTO_NAMESPACE(sample_iid)
 #define sample_iid_tDiTRU CRYPTO_NAMESPACE(sample_iid_tDiTRU)

@@ -23,10 +23,10 @@ void sample_fg_tDiTRU(poly *f, poly *g, const unsigned char uniformbytes[tDiTRU_
           
      sample_fixed_type(f0,uniformbytes, (d_f)/2 , 0);
   
-     sample_fixed_type(f1,uniformbytes+tDiTRU_SAMPLE_FG_BYTES, d_f-d_f/2 , 1);
+     sample_fixed_type(f1,uniformbytes+tDiTRU_SAMPLE_FT_BYTES, d_f-d_f/2 , 1);
   
 
-     sample_fixed_type(g0,uniformbytes+2*tDiTRU_SAMPLE_IID_BYTES, (d_f)/2 , 0);
+     sample_fixed_type(g0,uniformbytes+2*tDiTRU_SAMPLE_FT_BYTES, (d_f)/2 , 0);
      
      sample_fixed_type(g1 , uniformbytes+3*tDiTRU_SAMPLE_FT_BYTES, (d_f+1)/2, 0);
 
@@ -50,8 +50,32 @@ void sample_rm(poly *r, poly *m, const unsigned char uniformbytes[tDiTRU_SAMPLE_
 
 #ifdef tDiTRU_HPS
   sample_iid(r,uniformbytes);
-  sample_fixed_type(m,uniformbytes+tDiTRU_SAMPLE_IID_BYTES ,d_f,0);    // take d need to be checked and bit.
+  sample_fixed_type(m,uniformbytes+tDiTRU_SAMPLE_FT_BYTES ,d_f,0);  // take d need to be checked and bit.
 #endif
+}
+void sample_rm_tDiTRU(poly*r,poly*m,const unsigned char uniformbytes[tDiTRU_SAMPLE_RM_BYTES]){
+    poly x1,x2,x3,x4;
+     poly *f0 = &x1 ,*f1 = &x2;
+     poly *g0 = &x3 ,*g1 = &x4;
+
+     //sample_iid_tDiTRU(f,uniformbytes );
+          
+     sample_fixed_type(f0,uniformbytes, (d_f)/2 , 0);
+  
+     sample_fixed_type(f1,uniformbytes+tDiTRU_SAMPLE_FT_BYTES, d_f-d_f/2 , 1);
+  
+
+     sample_fixed_type(g0,uniformbytes+2*tDiTRU_SAMPLE_FT_BYTES, (d_f)/2 , 0);
+     
+     sample_fixed_type(g1 , uniformbytes+3*tDiTRU_SAMPLE_FT_BYTES, (d_f+1)/2, 0);
+
+      for(int i=0;i<N;i++)
+      {
+        r->coeffs[i] = f0->coeffs[i];
+        r->coeffs[N+i] = f1->coeffs[i];
+        m->coeffs[i] = g0->coeffs[i];
+        m->coeffs[N+i] = g1->coeffs[i];
+      }
 }
 
 

@@ -26,8 +26,10 @@ void poly_mod_3_Phi_n(poly *r)
 void poly_mod_3_Phi_n_tDiTRU(poly *r)
 {
   int i;
-  for(i=0; i <ORDER; i++)
+  for(i=0; i <N; i++)
     r->coeffs[i] = mod3(r->coeffs[i] + 2*r->coeffs[N-1]);
+  for(i=N ; i <ORDER; i++)
+    r->coeffs[i] = mod3(r->coeffs[i] + 2*r->coeffs[ORDER-1]);
 }
 
 void poly_mod_q_Phi_n(poly *r)
@@ -35,6 +37,14 @@ void poly_mod_q_Phi_n(poly *r)
   int i;
   for(i=0; i<N; i++)
     r->coeffs[i] = r->coeffs[i] - r->coeffs[N-1];
+}
+void poly_mod_q_Phi_n_tDiTRU(poly *r)
+{
+  int i;
+  for(i=0; i<N; i++)
+    r->coeffs[i] = r->coeffs[i] - r->coeffs[N-1];
+  for(i=N; i<ORDER; i++)
+    r->coeffs[i] = r->coeffs[i] - r->coeffs[ORDER-1];
 }
 
 void poly_Rq_to_S3(poly *r, const poly *a)

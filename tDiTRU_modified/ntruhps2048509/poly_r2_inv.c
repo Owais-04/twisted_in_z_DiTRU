@@ -1,7 +1,7 @@
 /* Based on supercop-20200702/crypto_core/invhrss701/simpler/core.c */
 
 #include "poly.h"
-
+#include <stdio.h>
 /* return -1 if x<0 and y<0; otherwise return 0 */
 static inline int16_t both_negative_mask(int16_t x,int16_t y)
 {
@@ -46,4 +46,5 @@ void poly_R2_inv(poly *r, const poly *a)
 
   for (i = 0;i < N-1;++i) r->coeffs[i] = v.coeffs[N-2-i];
   r->coeffs[N-1] = 0;
+
 }

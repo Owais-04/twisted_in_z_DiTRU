@@ -89,8 +89,11 @@ void poly_S3_mul_tDiTRU(poly *r, const poly *a, const poly *b)
 
 void poly_Rq_inv_tDiTRU(poly *r, const poly *a){
 
-  //printf("Dihedral is here\n");
-  poly x1, x2, x3, x4, x5, x6;
+  printf("in rq inv a:\n");
+  print_poly_values(a);
+
+ 
+  poly x1, x2, x3, x4, x5, x6, x7;
   poly *u=&x1, *v=&x2;
   poly *u1=&x3, *v1=&x4;
   poly *uu1=&x5, *vv1=&x6;
@@ -102,24 +105,37 @@ void poly_Rq_inv_tDiTRU(poly *r, const poly *a){
   }
   rotinv(u,u1);
   rotinv(v,v1);
+  
+  
   poly_Rq_mul(uu1,u,u1);
   poly_Rq_mul(vv1,v,v1);
+ // print_poly_values(vv1);
   get_minus(vv1); //newly added for twisted dihderal 
+
   poly *c = u;
-  for(int i=0;i<N;i++){
-    c->coeffs[i]= MODQ(vv1->coeffs[i]-uu1->coeffs[i]);
+
+
+    for(int i=0;i<N;i++){
+    c->coeffs[i]= MODQ(vv1->coeffs[i]- uu1->coeffs[i]);
   }
+    printf("c in rq inv  verify:\n");
+  for(int i=0;i<N;i++){
+    printf(" %d",((c->coeffs[i])));
+     
+    }
+      printf("new line \n");
   poly temp ;
   poly *temp1= &temp;
-  poly *c_inv = uu1;
+  poly *c_inv = &x7;
   poly_Rq_inv(c_inv,c);
   poly_Rq_mul(temp1, c, c_inv);
-
-  // for(int i=0;i<N;i++){
-  //   printf(" %d",temp1->coeffs[i]);
+  printf("rq inv verify:\n");
+  for(int i=0;i<N;i++){
+    printf(" %d",((temp1->coeffs[i])));
      
-  //   }
-  //   printf("new line \n");
+    }
+
+    printf("new line \n");
   
   poly *b = vv1;
   
@@ -184,10 +200,10 @@ static void poly_R2_inv_to_Rq_inv(poly *r, const poly *ai, const poly *a)
 
   // for 0..4
   //    ai = ai * (2 - a*ai)  mod q
-  for(i=0; i<ORDER; i++)
+  for(i=0; i<N; i++)
     b.coeffs[i] = -(a->coeffs[i]);
 
-  for(i=0; i<ORDER; i++)
+  for(i=0; i<N; i++)
     r->coeffs[i] = ai->coeffs[i];
 
   poly_Rq_mul(&c, r, &b);
@@ -212,11 +228,11 @@ void poly_Rq_inv(poly *r, const poly *a)
   poly ai2;
   poly_R2_inv(&ai2, a);
   poly_R2_inv_to_Rq_inv(r, &ai2, a);
+
 }
 void poly_Sq_inv(poly *r, const poly *a)
 {
   poly ai2;
   poly_R2_inv(&ai2, a);
-  poly_R2_inv_to_Rq_inv(r, &ai2, a);
-  
+  poly_R2_inv_to_Rq_inv(r, &ai2, a);  
 }

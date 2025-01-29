@@ -17,9 +17,9 @@
 #define tDiTRU_Q (1 << tDiTRU_LOGQ)
 #define tDiTRU_WEIGHT (tDiTRU_Q/8 - 2)
 
-#define d_f 127 //weight of d_f and d_r
-//#define d_g ((ORDER)/3) //weight of d_g 
-#define d_g 127
+#define d_f 195 //weight of d_f and d_r
+#define d_g ((ORDER)/3) //weight of d_g 
+
 #define tDiTRU_SEEDBYTES       32
 #define tDiTRU_PRFKEYBYTES     32
 #define tDiTRU_SHAREDKEYBYTES  32
