@@ -69,8 +69,8 @@ To decrypt a message:
 
 ## CONTRIBUTORS
 
-- [Mohammad owais]
-- [Furqan mushtaq]
+- Mohammad owais
+- Furqan mushtaq
 
 ## LICENSE
 
